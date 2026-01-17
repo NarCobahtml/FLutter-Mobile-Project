@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'result.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -144,7 +145,14 @@ class LoginPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(
