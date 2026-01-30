@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'result.dart';
-import 'home.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +12,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'SwaraNusa',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFF110E33), // dark purple/navy
+        fontFamily: 'Roboto',
+      ),
       home: const LoginPage(),
     );
   }
@@ -21,194 +27,225 @@ class MyApp extends StatelessWidget {
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+  // Color palette chosen to closely match the mockup
+  static const Color primaryOrange = Color(0xFFF59E0B);
+  static const Color secondaryBrown = Color(0xFF3E2A26);
+  static const Color inputFill = Color(0xff3f2b2b); // darker translucent
+
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width;
+
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF0B0B2A), Color(0xFF0A0F3D)],
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 30),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 50, 24, 36),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Logo
+              SizedBox(
+                child: Column(
+                  children: [
+                    // Use SVG if provided; fall back to PNG placeholder
+                    SizedBox(
+                      width: width * 0.25,
+                      height: width * 0.25,
 
-                  // LOGO
-                  Icon(Icons.graphic_eq, size: 80, color: Colors.orange),
+                      child: SvgPicture.asset(
+                        'assets/icon/logo.svg',
+                        semanticsLabel: 'Logo',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Title
+              const Text(
+                'Selamat Datang di\nSwaraNusa',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  height: 1.15,
+                ),
+              ),
 
-                  const SizedBox(height: 10),
+              const SizedBox(height: 55),
 
-                  const Text("Quiz", style: TextStyle(color: Colors.white70)),
+              // Email field
+              _buildInputField(hint: 'Email or Username'),
+              const SizedBox(height: 14),
 
-                  const SizedBox(height: 20),
+              // Password field
+              _buildInputField(hint: 'Password', obscure: true),
 
-                  const Text(
-                    "Selamat Datang di\nSwaraNusa",
-                    textAlign: TextAlign.center,
+              const SizedBox(height: 63),
+
+              // Primary button - Log In
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryOrange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'Log In',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
+                ),
+              ),
 
-                  const SizedBox(height: 40),
+              const SizedBox(height: 16),
 
-                  // EMAIL
-                  TextField(
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Email or Username",
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
+              // Secondary button - Sign Up
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: secondaryBrown,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    side: BorderSide.none,
+                  ),
+
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Color(0xFFF5A21A),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
+                ),
+              ),
 
-                  const SizedBox(height: 16),
+              const SizedBox(height: 35),
 
-                  // PASSWORD
-                  TextField(
-                    obscureText: true,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.1),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
+              // Divider with center label
+              Row(
+                children: [
+                  Expanded(child: Divider(color: Colors.white24)),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(color: const Color(0xFF2E2540)),
+                    child: const Text(
+                      'Atau lanjut dengan',
+                      style: TextStyle(fontSize: 12, color: Colors.white70),
                     ),
                   ),
+                  Expanded(child: Divider(color: Colors.white24)),
+                ],
+              ),
 
-                  const SizedBox(height: 30),
+              const SizedBox(height: 25),
 
-                  // LOGIN BUTTON
-                  SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ResultPage(
-                              correct: 7,
-                              wrong: 3,
-                              username: "User",
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Log In",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+              // Social buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: _socialButton(
+                      context,
+                      'Facebook',
+                      'assets/icons/facebook.svg',
                     ),
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // SIGN UP BUTTON
-                  SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.brown,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _socialButton(
+                      context,
+                      'Google',
+                      'assets/icons/google.svg',
                     ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // DIVIDER
-                  Row(
-                    children: const [
-                      Expanded(child: Divider(color: Colors.white30)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          "Atau lanjut dengan",
-                          style: TextStyle(color: Colors.white54),
-                        ),
-                      ),
-                      Expanded(child: Divider(color: Colors.white30)),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // SOCIAL BUTTONS
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      socialButton("Facebook", Icons.facebook),
-                      socialButton("Google", Icons.g_mobiledata),
-                    ],
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  static Widget socialButton(String text, IconData icon) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.brown.shade700,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+  static Widget _buildInputField({required String hint, bool obscure = false}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xff282647),
+        borderRadius: BorderRadius.circular(12),
       ),
-      onPressed: () {},
-      icon: Icon(icon, color: Colors.orange),
-      label: Text(text, style: const TextStyle(color: Colors.orange)),
+      child: TextField(
+        obscureText: obscure,
+        style: const TextStyle(color: Colors.white70),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: const TextStyle(color: Colors.white54),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 18,
+            vertical: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _socialButton(BuildContext context, String label, String assetName) {
+    return SizedBox(
+      height: 51,
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF3E2A26),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
+          elevation: 0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            // Icon (SVG preferred)
+            SizedBox(
+              width: 22,
+              height: 22,
+              child: SvgPicture.asset(
+                assetName,
+                placeholderBuilder: (context) =>
+                    SvgPicture.asset('assets/icons/placeholder.svg'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Color(0xFFF5A21A),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
