@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'HomePage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -28,13 +27,6 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
-
-    _timer = Timer(widget.duration, () {
-      if (!mounted) return;
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomePage()));
-    });
   }
 
   @override
