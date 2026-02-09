@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'forgot_password.dart';
+import 'signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -92,7 +94,26 @@ class LoginPage extends StatelessWidget {
               // Password field
               _buildInputField(hint: 'Password', obscure: true),
 
-              const SizedBox(height: 63),
+              // Forgot Password
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Lupa Password?',
+                    style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 14),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 30),
 
               // Primary button - Log In
               SizedBox(
@@ -125,7 +146,14 @@ class LoginPage extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: secondaryBrown,
                     shape: RoundedRectangleBorder(

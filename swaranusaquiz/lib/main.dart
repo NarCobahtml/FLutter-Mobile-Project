@@ -6,6 +6,7 @@ import 'result.dart';
 import 'review.dart';
 import 'reward.dart';
 import 'dart:async';
+import 'splash_screen.dart';
 
 void main() {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF1A1A3E),
         fontFamily: 'PlusJakarta',
       ),
-      home: const HomePage(),
+      home: const SplashScreenSvg(),
     );
   }
 }
