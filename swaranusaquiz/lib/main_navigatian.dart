@@ -5,7 +5,6 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 // halaman kamu
 import 'leaderboard.dart';
 import 'profil.dart';
-import 'review.dart';
 
 class MainNavigation extends StatefulWidget {
   final int initialIndex;
@@ -36,21 +35,35 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<String> navLabels = ["Beranda", "Papan Skor", "Hadiah", "Profil"];
 
   final List<Widget> pages = [
-    ReviewAnswersScreen(
-      answers: ReviewAnswersData.getSampleData(),
-    ), // Home (Index 0)
+    const Scaffold(
+      backgroundColor: Color(0xFF110E33),
+      body: Center(
+        child: Text(
+          'Beranda',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+      ),
+    ), // Beranda (Index 0) - Placeholder
     LeaderboardScreen(
       leaderboardData: LeaderboardData.getSampleData(),
       showNavbar: false,
     ), // Leaderboard (Index 1)
-    // Reward (Index 2)
+    const Scaffold(
+      backgroundColor: Color(0xFF110E33),
+      body: Center(
+        child: Text(
+          'Hadiah - Segera Hadir',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+      ),
+    ), // Hadiah (Index 2) - Placeholder
     ProfileScreen(showNavbar: false), // Profile (Index 3)
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, // Important for curved navbar transparency
+      extendBody: true, //
       body: pages[_bottomNavIndex < pages.length ? _bottomNavIndex : 0],
 
       floatingActionButton: Stack(
@@ -79,12 +92,12 @@ class _MainNavigationState extends State<MainNavigation> {
               color: const Color(0xFF1a1a4a), // Match navbar background
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF6B9D).withOpacity(0.35),
+                  color: const Color(0xFFFF6B9D).withValues(alpha: 0.35),
                   blurRadius: 15,
                   spreadRadius: 2,
                 ),
                 BoxShadow(
-                  color: const Color(0xFF9B51E0).withOpacity(0.35),
+                  color: const Color(0xFF9B51E0).withValues(alpha: 0.35),
                   blurRadius: 15,
                   spreadRadius: 2,
                 ),
@@ -137,9 +150,9 @@ class _MainNavigationState extends State<MainNavigation> {
         },
         activeIndex: _bottomNavIndex,
         gapLocation: GapLocation.center,
-        notchSmoothness: NotchSmoothness.smoothEdge,
-        leftCornerRadius: 40,
-        rightCornerRadius: 40,
+        notchSmoothness: NotchSmoothness.softEdge,
+        leftCornerRadius: 15,
+        rightCornerRadius: 15,
         backgroundColor: const Color(0xFF1a1a4a), // Deep dark navy
         onTap: (index) {
           setState(() {

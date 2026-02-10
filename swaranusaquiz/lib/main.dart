@@ -4,7 +4,6 @@ import 'Leaderboard.dart';
 import 'login.dart';
 import 'result.dart';
 import 'review.dart';
-import 'reward.dart';
 import 'dart:async';
 import 'splash_screen.dart';
 
@@ -200,27 +199,6 @@ class HomePage extends StatelessWidget {
                     elevation: 0,
                   ),
                   child: const Text('Masuk (Login)'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (c) => const RewardScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF3E2A26),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text('Reward'),
                 ),
 
                 ElevatedButton(
