@@ -133,11 +133,11 @@ class LeaderboardScreen extends StatelessWidget {
                 if (onNavigationTap != null) {
                   onNavigationTap!(index);
                 } else {
-                  if (index == 1) return; // Already on Leaderboard
+                  if (index == 1) return;
                   int mainNavIndex = 0;
-                  if (index == 0) mainNavIndex = 0; // Home
-                  if (index == 2) mainNavIndex = 2; // Reward
-                  if (index == 3) mainNavIndex = 3; // Profile (Index 3. Was 4)
+                  if (index == 0) mainNavIndex = 0;
+                  if (index == 2) mainNavIndex = 2;
+                  if (index == 3) mainNavIndex = 3;
 
                   Navigator.pushReplacement(
                     context,

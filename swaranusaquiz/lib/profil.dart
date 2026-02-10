@@ -4,7 +4,6 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'main_navigatian.dart';
 
 class ProfileScreen extends StatelessWidget {
-  // Internal dummy profile data — no need to pass anything from caller
   static const String _dummyUserName = 'John Doe';
   static const String _dummyUserHandle = '@DoeMusic';
   static const String _dummyAvatarPath = 'assets/image/profile.png';
@@ -13,7 +12,6 @@ class ProfileScreen extends StatelessWidget {
   static const int _dummyBadgesEarned = 6;
   static const Color statColor = Color(0xff1d1a3d);
 
-  // exposed as getters so existing widget code continues to work unchanged
   String get userName => _dummyUserName;
   String get userHandle => _dummyUserHandle;
   String? get avatarPath => _dummyAvatarPath;
@@ -24,13 +22,10 @@ class ProfileScreen extends StatelessWidget {
   final VoidCallback? onRewardsAndMissionsTap;
   final Function(int)? onNavigationTap;
 
-  /// Optional: daftar asset SVG untuk ikon bottom nav (urut: beranda, papan skor, hadiah, profil)
   final List<String>? bottomNavIconAssets;
 
-  /// Optional: asset SVG untuk ikon tengah (floating action)
   final String centerNavIconAsset = 'assets/icon/gamemode.svg';
 
-  /// index aktif untuk mewarnai navbar (default = Profil)
   final int currentIndex;
   final bool showNavbar;
 
@@ -81,6 +76,9 @@ class ProfileScreen extends StatelessWidget {
                       const SizedBox(height: 15),
                       // Rewards & Missions Card
                       _buildRewardsCard(),
+                      const SizedBox(height: 12),
+                      // Theme Selection Menu
+                      _buildThemeMenu(),
                       const SizedBox(height: 32),
                       // Badges Section
                       _buildBadgesSection(),
@@ -91,7 +89,6 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          // Fixed Bottom Navigation deleted
         ],
       ),
       floatingActionButton: showNavbar
@@ -116,14 +113,7 @@ class ProfileScreen extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      // Action for center button (e.g. Gamemode)
-                      if (onNavigationTap != null)
-                        onNavigationTap!(1); // Index 1 is gamemode usually?
-                      // Wait, in the image list: Home(0), Leaderboard(1), Reward(2), Profile(3)
-                      // But main_nav has 5 pages.
-                      // Let's assume Middle button does nothing or goes to GameMode?
-                      // User said "without changing page content".
-                      // I will leave onTap empty or link to something safe.
+                      if (onNavigationTap != null) onNavigationTap!(1);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -169,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 );
               },
-              activeIndex: 3, // Profile is index 3 in this 4-item list
+              activeIndex: 3,
               gapLocation: GapLocation.center,
               notchSmoothness: NotchSmoothness.softEdge,
               leftCornerRadius: 32,
@@ -179,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                 if (onNavigationTap != null) {
                   onNavigationTap!(index);
                 } else {
-                  if (index == 3) return; // Already on Profile
+                  if (index == 3) return;
                   int mainNavIndex = 0;
                   if (index == 0) mainNavIndex = 0; // Home
                   if (index == 1) mainNavIndex = 1; // Leaderboard
@@ -366,6 +356,45 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThemeMenu() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xff1d1a3d),
+          borderRadius: BorderRadius.circular(32),
+          border: Border.all(color: Colors.white.withAlpha(13), width: 1),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(10),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.brightness_4,
+                color: Color(0xFFFFB020),
+                size: 20,
+              ),
+            ),
+            // Switch placeholder (non-functional for now)
+            Switch(
+              value: true,
+              onChanged: null,
+              activeColor: const Color(0xFFFFB020),
+              trackColor: MaterialStateProperty.all(Colors.white10),
+            ),
+          ],
         ),
       ),
     );

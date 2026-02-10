@@ -6,6 +6,7 @@ import 'result.dart';
 import 'review.dart';
 import 'dart:async';
 import 'splash_screen.dart';
+import 'level.dart';
 
 void main() {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -84,6 +85,52 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 40),
 
+            // PRIMARY BUTTON: LEVEL SELECTION
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LevelSelectionPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFFB020),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 60,
+                  vertical: 20,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                elevation: 10,
+                shadowColor: const Color(0xFFFFB020).withOpacity(0.5),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.play_arrow, size: 28),
+                  SizedBox(width: 12),
+                  Text(
+                    'MULAI PETUALANGAN',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            const Divider(color: Colors.white24, indent: 40, endIndent: 40),
+
+            const SizedBox(height: 30),
+
             // Button to Profile
             ElevatedButton(
               onPressed: () {
@@ -145,6 +192,35 @@ class HomePage extends StatelessWidget {
                 elevation: 0,
               ),
               child: const Text('Tinjau Jawaban'),
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LevelSelectionPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFFB020),
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48,
+                  vertical: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                elevation: 0,
+              ),
+              child: const Text(
+                'Pilih Level',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
 
             Wrap(

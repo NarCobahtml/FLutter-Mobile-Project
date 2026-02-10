@@ -43,21 +43,21 @@ class _MainNavigationState extends State<MainNavigation> {
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
-    ), // Beranda (Index 0) - Placeholder
+    ), // Beranda 0 - Placeholder
     LeaderboardScreen(
       leaderboardData: LeaderboardData.getSampleData(),
       showNavbar: false,
-    ), // Leaderboard (Index 1)
+    ), // Leaderboard 1
     const Scaffold(
       backgroundColor: Color(0xFF110E33),
       body: Center(
         child: Text(
-          'Hadiah - Segera Hadir',
+          'Hadiah',
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
-    ), // Hadiah (Index 2) - Placeholder
-    ProfileScreen(showNavbar: false), // Profile (Index 3)
+    ), // Hadiah 2 - Placeholder
+    ProfileScreen(showNavbar: false), // Profile 3
   ];
 
   @override

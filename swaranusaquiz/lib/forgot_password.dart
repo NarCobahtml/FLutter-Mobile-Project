@@ -26,7 +26,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _goToOtp() {
-    // In a real app, send API request to send OTP here
     if (_emailController.text.isNotEmpty) {
       setState(() {
         _currentStep = 1;
@@ -92,9 +91,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   child: SvgPicture.asset(
                     _currentStep == 0
-                        ? 'assets/icon/email_icon.svg' // Placeholder - likely doesn't exist, will fallback
+                        ? 'assets/icon/email_icon.svg' // Placeholder
                         : 'assets/icon/otp_icon.svg',
-                    // Fallback to Icon if SVG fails
+
                     placeholderBuilder: (context) => Icon(
                       _currentStep == 0
                           ? Icons.email_outlined

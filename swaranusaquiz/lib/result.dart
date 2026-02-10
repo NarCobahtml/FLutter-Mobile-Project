@@ -26,29 +26,6 @@ class QuizResultScreen extends StatelessWidget {
         child: Stack(
           children: [
             // Decorative Emojis
-            Positioned(
-              top: 80,
-              left: 30,
-              child: Transform.rotate(
-                angle: -0.3,
-                child: const Text('🎉', style: TextStyle(fontSize: 40)),
-              ),
-            ),
-            Positioned(
-              top: 70,
-              left: 75,
-              child: const Text('✨', style: TextStyle(fontSize: 24)),
-            ),
-            Positioned(
-              top: 60,
-              right: 30,
-              child: const Text('🎊', style: TextStyle(fontSize: 40)),
-            ),
-            Positioned(
-              top: 220,
-              right: 35,
-              child: const Text('🏆', style: TextStyle(fontSize: 45)),
-            ),
 
             // Main Content
             Column(
