@@ -86,7 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   margin: const EdgeInsets.only(bottom: 30),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2E2540),
+                    color: const Color(0xFF110E33),
                     shape: BoxShape.circle,
                   ),
                   child: SvgPicture.asset(

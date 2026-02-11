@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'main_navigatian.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  final bool showNavbar;
+  final VoidCallback? onRewardTap;
+
+  const ProfileScreen({Key? key, this.showNavbar = true, this.onRewardTap})
+    : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   static const String _dummyUserName = 'John Doe';
   static const String _dummyUserHandle = '@DoeMusic';
-  static const String _dummyAvatarPath = 'assets/image/profile.png';
+  static const String _dummyAvatarPath = 'assets/image/user_profile.png';
   static const int _dummyQuizCompleted = 67;
   static const int _dummyCorrectAnswerPercentage = 84;
   static const int _dummyBadgesEarned = 6;
-  static const Color statColor = Color(0xff1d1a3d);
+  static const Color statColor = Color(0xff110e33);
+
+  bool _isDarkMode = true;
 
   String get userName => _dummyUserName;
   String get userHandle => _dummyUserHandle;
@@ -19,173 +30,53 @@ class ProfileScreen extends StatelessWidget {
   int get correctAnswerPercentage => _dummyCorrectAnswerPercentage;
   int get badgesEarned => _dummyBadgesEarned;
 
-  final VoidCallback? onRewardsAndMissionsTap;
-  final Function(int)? onNavigationTap;
-
-  final List<String>? bottomNavIconAssets;
-
   final String centerNavIconAsset = 'assets/icon/gamemode.svg';
-
-  final int currentIndex;
-  final bool showNavbar;
-
-  const ProfileScreen({
-    Key? key,
-    this.onRewardsAndMissionsTap,
-    this.onNavigationTap,
-    this.bottomNavIconAssets,
-
-    this.currentIndex = 3,
-    this.showNavbar = true,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF110E33),
-      body: Stack(
-        children: [
-          // Scrollable Content
-          SafeArea(
-            bottom: false,
-            child: CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(bottom: 40),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate([
-                      const SizedBox(height: 12),
-                      // Header
-                      const Center(
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.3,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 36),
-                      // Avatar Section
-                      _buildAvatarSection(),
-                      const SizedBox(height: 24),
-                      // Stats Cards
-                      _buildStatsCards(),
-                      const SizedBox(height: 15),
-                      // Rewards & Missions Card
-                      _buildRewardsCard(),
-                      const SizedBox(height: 12),
-                      // Theme Selection Menu
-                      _buildThemeMenu(),
-                      const SizedBox(height: 32),
-                      // Badges Section
-                      _buildBadgesSection(),
-                      const SizedBox(height: 20),
-                    ]),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: showNavbar
-          ? Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF6B9D), Color(0xFF9B51E0)],
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      if (onNavigationTap != null) onNavigationTap!(1);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SvgPicture.asset(
-                        'assets/icon/gamemode.svg',
+    return Stack(
+      children: [
+        // Scrollable Content
+        CustomScrollView(
+          physics: const ClampingScrollPhysics(),
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.only(bottom: 100), // Navbar padding
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  const SizedBox(height: 12),
+                  // Header
+                  const Center(
+                    child: Text(
+                      'Profile',
+                      style: TextStyle(
                         color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.3,
                       ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 36),
+                  // Avatar Section
+                  _buildAvatarSection(),
+                  const SizedBox(height: 24),
+                  // Stats Cards
+                  _buildStatsCards(),
+                  const SizedBox(height: 15),
+                  _buildThemeMenu(),
+                  const SizedBox(height: 15),
+                  _buildRewardsCard(),
+                  const SizedBox(height: 32),
+                  // Badges Section
+                  _buildBadgesSection(),
+                  const SizedBox(height: 20),
+                ]),
               ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: showNavbar
-          ? AnimatedBottomNavigationBar.builder(
-              itemCount: 4,
-              tabBuilder: (int index, bool isActive) {
-                final icons = [
-                  "assets/icon/home.svg",
-                  "assets/icon/leaderboard.svg",
-                  "assets/icon/reward.svg",
-                  "assets/icon/profile.svg",
-                ];
-                final labels = ["Beranda", "Papan Skor", "Hadiah", "Profil"];
-                final color = isActive ? const Color(0xFFF59E0B) : Colors.white;
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      icons[index],
-                      color: color,
-                      width: 24,
-                      height: 24,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      labels[index],
-                      style: TextStyle(color: color, fontSize: 10),
-                    ),
-                  ],
-                );
-              },
-              activeIndex: 3,
-              gapLocation: GapLocation.center,
-              notchSmoothness: NotchSmoothness.softEdge,
-              leftCornerRadius: 32,
-              rightCornerRadius: 32,
-              backgroundColor: const Color(0xFF252850),
-              onTap: (index) {
-                if (onNavigationTap != null) {
-                  onNavigationTap!(index);
-                } else {
-                  if (index == 3) return;
-                  int mainNavIndex = 0;
-                  if (index == 0) mainNavIndex = 0; // Home
-                  if (index == 1) mainNavIndex = 1; // Leaderboard
-                  if (index == 2) mainNavIndex = 2; // Reward
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          MainNavigation(initialIndex: mainNavIndex),
-                    ),
-                  );
-                }
-              },
-            )
-          : null,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -284,7 +175,7 @@ class ProfileScreen extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onRewardsAndMissionsTap,
+          onTap: widget.onRewardTap,
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
@@ -313,14 +204,12 @@ class ProfileScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                   ),
-
                   child: SvgPicture.asset(
                     'assets/icon/piala.svg',
-                    width: 15,
-                    height: 15,
-                    colorFilter: const ColorFilter.mode(
-                      Color(0xFFFFB020),
-                      BlendMode.srcIn,
+                    fit: BoxFit.contain,
+                    placeholderBuilder: (BuildContext context) => const Icon(
+                      Icons.emoji_events,
+                      color: Color(0xFFFFB020),
                     ),
                   ),
                 ),
@@ -374,25 +263,62 @@ class ProfileScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(10),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(
-                Icons.brightness_4,
-                color: Color(0xFFFFB020),
-                size: 20,
-              ),
+            Row(
+              children: [
+                Container(
+                  width: 34,
+                  height: 34,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(10),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                          return ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          );
+                        },
+                    child: Icon(
+                      _isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+                      key: ValueKey<bool>(_isDarkMode),
+                      color: const Color(0xFFFFB020),
+                      size: 20,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: Text(
+                    _isDarkMode ? 'Dark Mode' : 'Light Mode',
+                    key: ValueKey<bool>(_isDarkMode),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
             // Switch placeholder (non-functional for now)
             Switch(
-              value: true,
-              onChanged: null,
+              value: !_isDarkMode,
+              onChanged: (value) {
+                setState(() {
+                  _isDarkMode = !value;
+                });
+              },
               activeColor: const Color(0xFFFFB020),
-              trackColor: MaterialStateProperty.all(Colors.white10),
+              trackColor: MaterialStateProperty.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return const Color(0xFFFFB020).withAlpha(100);
+                }
+                return Colors.white10;
+              }),
             ),
           ],
         ),

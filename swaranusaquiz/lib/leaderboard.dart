@@ -6,7 +6,6 @@ import 'main_navigatian.dart';
 class LeaderboardScreen extends StatelessWidget {
   final int? currentUserId;
   final List<LeaderboardUser> leaderboardData;
-  final Function(int)? onNavigationTap;
   final bool showNavbar;
 
   static const Color backgroundColor = Color(0xFF110E33);
@@ -18,7 +17,6 @@ class LeaderboardScreen extends StatelessWidget {
     Key? key,
     this.currentUserId,
     required this.leaderboardData,
-    this.onNavigationTap,
     this.showNavbar = true,
   }) : super(key: key);
 
@@ -31,125 +29,17 @@ class LeaderboardScreen extends StatelessWidget {
         ? leaderboardData.sublist(3)
         : <LeaderboardUser>[];
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: Stack(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                _buildHeader(),
-                const SizedBox(height: 20),
-                _buildTabBar(),
-                const SizedBox(height: 24),
-                _buildTop3Podium(top3),
-                const SizedBox(height: 20),
-                Expanded(child: _buildLeaderboardList(rest)),
-              ],
-            ),
-          ),
-          // Fixed Bottom Navigation deleted
-        ],
-      ),
-      floatingActionButton: showNavbar
-          ? Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFF6B9D), Color(0xFF9B51E0)],
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      // Action for center button
-                      if (onNavigationTap != null) onNavigationTap!(1);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SvgPicture.asset(
-                        'assets/icon/gamemode.svg',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: showNavbar
-          ? AnimatedBottomNavigationBar.builder(
-              itemCount: 4,
-              tabBuilder: (int index, bool isActive) {
-                final icons = [
-                  "assets/icon/home.svg",
-                  "assets/icon/leaderboard.svg",
-                  "assets/icon/reward.svg",
-                  "assets/icon/profile.svg",
-                ];
-                final labels = ["Beranda", "Papan Skor", "Hadiah", "Profil"];
-                final color = isActive ? const Color(0xFFF59E0B) : Colors.white;
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      icons[index],
-                      color: color,
-                      width: 24,
-                      height: 24,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      labels[index],
-                      style: TextStyle(color: color, fontSize: 10),
-                    ),
-                  ],
-                );
-              },
-              activeIndex: 1, // Leaderboard is index 1 in this list?
-              // Wait, in 4-item list: Home(0), Leaderboard(1), Reward(2), Profile(3). Yes.
-              gapLocation: GapLocation.center,
-              notchSmoothness: NotchSmoothness.softEdge,
-              leftCornerRadius: 32,
-              rightCornerRadius: 32,
-              backgroundColor: const Color(0xFF252850),
-              onTap: (index) {
-                if (onNavigationTap != null) {
-                  onNavigationTap!(index);
-                } else {
-                  if (index == 1) return;
-                  int mainNavIndex = 0;
-                  if (index == 0) mainNavIndex = 0;
-                  if (index == 2) mainNavIndex = 2;
-                  if (index == 3) mainNavIndex = 3;
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          MainNavigation(initialIndex: mainNavIndex),
-                    ),
-                  );
-                }
-              },
-            )
-          : null,
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        _buildHeader(),
+        const SizedBox(height: 20),
+        _buildTabBar(),
+        const SizedBox(height: 24),
+        _buildTop3Podium(top3),
+        const SizedBox(height: 20),
+        Expanded(child: _buildLeaderboardList(rest)),
+      ],
     );
   }
 
@@ -265,9 +155,7 @@ class LeaderboardScreen extends StatelessWidget {
             shape: BoxShape.circle,
 
             image: DecorationImage(
-              image: AssetImage(
-                user.avatarPath ?? 'assets/image/avatarJoko.png',
-              ),
+              image: AssetImage(user.avatarPath ?? 'assets/image/profil1.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -395,7 +283,7 @@ class _LeaderboardListItem extends StatelessWidget {
               border: Border.all(color: Colors.white, width: 2),
 
               image: const DecorationImage(
-                image: AssetImage('assets/image/avatarJoko.png'),
+                image: AssetImage('assets/image/profil1.png'),
                 fit: BoxFit.cover,
               ),
             ),

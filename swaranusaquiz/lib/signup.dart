@@ -102,7 +102,7 @@ class SignUpScreen extends StatelessWidget {
                       horizontal: 12,
                       vertical: 4,
                     ),
-                    decoration: BoxDecoration(color: const Color(0xFF2E2540)),
+                    decoration: BoxDecoration(color: const Color(0xFF110E33)),
                     child: const Text(
                       'Atau daftar dengan',
                       style: TextStyle(fontSize: 12, color: Colors.white70),

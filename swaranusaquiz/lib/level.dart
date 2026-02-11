@@ -1,3 +1,4 @@
+import 'package:swaranusaquiz/kuis/kuis_pertanyaan/kuis_pertanyaan1.dart';
 import 'package:flutter/material.dart';
 
 class _Colors {
@@ -41,7 +42,14 @@ const List<LevelData> _levels = [
 // --- Main Page ---
 
 class LevelSelectionPage extends StatelessWidget {
-  const LevelSelectionPage({Key? key}) : super(key: key);
+  final String modeName;
+  final String modeKey;
+
+  const LevelSelectionPage({
+    Key? key,
+    this.modeName = 'Tebak Gambar',
+    this.modeKey = 'tebak_gambar',
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +80,7 @@ class LevelSelectionPage extends StatelessWidget {
                   ),
                   itemCount: _levels.length,
                   itemBuilder: (context, index) {
-                    return _LevelCard(level: _levels[index]);
+                    return _LevelCard(level: _levels[index], modeKey: modeKey);
                   },
                 ),
               ),
@@ -137,8 +145,9 @@ class _Header extends StatelessWidget {
 
 class _LevelCard extends StatefulWidget {
   final LevelData level;
+  final String modeKey;
 
-  const _LevelCard({required this.level});
+  const _LevelCard({required this.level, required this.modeKey});
 
   @override
   State<_LevelCard> createState() => _LevelCardState();
@@ -176,8 +185,20 @@ class _LevelCardState extends State<_LevelCard>
 
   void _onTapUp(TapUpDetails details) {
     if (!widget.level.isLocked) {
-      _controller.reverse();
-      // Navigasi bisa diletakkan di sini
+      if (widget.level.number == 1) {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const KuisPertanyaan1(),
+            transitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+          ),
+        );
+      }
     }
   }
 

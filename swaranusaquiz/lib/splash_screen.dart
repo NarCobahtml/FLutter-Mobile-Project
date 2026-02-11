@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
-import 'main.dart';
+import 'login.dart';
 
 class SplashScreenSvg extends StatefulWidget {
   const SplashScreenSvg({super.key});
@@ -117,7 +117,7 @@ class _SplashScreenSvgState extends State<SplashScreenSvg>
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomePage(),
+              const LoginPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
@@ -139,7 +139,7 @@ class _SplashScreenSvgState extends State<SplashScreenSvg>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1a1a2e),
+      backgroundColor: const Color(0xFF110E33),
       body: FadeTransition(
         opacity: _screenFadeOutAnimation,
         child: Center(
@@ -169,7 +169,7 @@ class _SplashScreenSvgState extends State<SplashScreenSvg>
                             child: const Icon(
                               Icons.music_note,
                               size: 60,
-                              color: Color(0xFF1a1a2e),
+                              color: Color(0xFF110E33),
                             ),
                           ),
                         ),

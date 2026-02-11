@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'forgot_password.dart';
 import 'signup.dart';
+import 'main_navigatian.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +31,7 @@ class LoginPage extends StatelessWidget {
 
   static const Color primaryOrange = Color(0xFFF59E0B);
   static const Color secondaryBrown = Color(0xFF3E2A26);
-  static const Color inputFill = Color(0xff3f2b2b);
+  static const Color inputFill = Color(0xFF110E33);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +121,14 @@ class LoginPage extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainNavigation(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryOrange,
                     shape: RoundedRectangleBorder(
@@ -185,7 +193,7 @@ class LoginPage extends StatelessWidget {
                       horizontal: 12,
                       vertical: 4,
                     ),
-                    decoration: BoxDecoration(color: const Color(0xFF2E2540)),
+                    decoration: BoxDecoration(color: const Color(0xFF110E33)),
                     child: const Text(
                       'Atau lanjut dengan',
                       style: TextStyle(fontSize: 12, color: Colors.white70),

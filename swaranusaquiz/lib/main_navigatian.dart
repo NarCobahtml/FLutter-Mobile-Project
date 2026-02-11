@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:swaranusaquiz/home_page.dart';
+import 'package:swaranusaquiz/reward_page.dart';
+import 'package:swaranusaquiz/mode_page.dart';
 
 // halaman kamu
 import 'leaderboard.dart';
@@ -17,6 +19,8 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   late int _bottomNavIndex;
+  int? _pressedIndex;
+  bool _isFabPressed = false;
 
   @override
   void initState() {
@@ -24,52 +28,55 @@ class _MainNavigationState extends State<MainNavigation> {
     _bottomNavIndex = widget.initialIndex;
   }
 
-  // PATH SVG KAMU (Updated to 4 items + Center FAB logic)
-  final List<String> svgIcons = [
-    "assets/icon/home.svg",
-    "assets/icon/leaderboard.svg",
-    "assets/icon/reward.svg",
-    "assets/icon/profile.svg",
+  // PNG Icons from design
+  final List<String> footerIcons = [
+    "assets/image/icon_footer1.png",
+    "assets/image/icon_footer2.png",
+    "assets/image/icon_footer4.png",
+    "assets/image/icon_footer5.png",
   ];
 
   final List<String> navLabels = ["Beranda", "Papan Skor", "Hadiah", "Profil"];
 
-  final List<Widget> pages = [
-    const Scaffold(
-      backgroundColor: Color(0xFF110E33),
-      body: Center(
-        child: Text(
-          'Beranda',
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
-      ),
-    ), // Beranda 0 - Placeholder
-    LeaderboardScreen(
-      leaderboardData: LeaderboardData.getSampleData(),
-      showNavbar: false,
-    ), // Leaderboard 1
-    const Scaffold(
-      backgroundColor: Color(0xFF110E33),
-      body: Center(
-        child: Text(
-          'Hadiah',
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
-      ),
-    ), // Hadiah 2 - Placeholder
-    ProfileScreen(showNavbar: false), // Profile 3
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true, //
-      body: pages[_bottomNavIndex < pages.length ? _bottomNavIndex : 0],
+    final List<Widget> pages = [
+      HomePage(
+        onNavigateToMode: () {
+          setState(() {
+            _bottomNavIndex = 4; // Switch to ModePage (index 4)
+          });
+        },
+      ), // 0
+      LeaderboardScreen(
+        leaderboardData: LeaderboardData.getSampleData(),
+        showNavbar: false,
+      ), // 1
+      const RewardPage(), // 2
+      ProfileScreen(
+        showNavbar: false,
+        onRewardTap: () {
+          setState(() {
+            _bottomNavIndex = 2; // Index for RewardPage
+          });
+        },
+      ), // 3
+      const ModePage(), // 4
+    ];
 
+    return Scaffold(
+      extendBody: true,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        child: pages[_bottomNavIndex < pages.length ? _bottomNavIndex : 0],
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
       floatingActionButton: Stack(
         alignment: Alignment.center,
         children: [
-          // Glow Effect
+          // Theme-matching Glow Effect
           Container(
             width: 80,
             height: 80,
@@ -77,8 +84,8 @@ class _MainNavigationState extends State<MainNavigation> {
               shape: BoxShape.circle,
               gradient: RadialGradient(
                 colors: [
-                  const Color(0xFFFF6B9D).withValues(alpha: 0.4),
-                  const Color(0xFF9B51E0).withValues(alpha: 0.4),
+                  const Color(0xFFF59E0B).withAlpha(100),
+                  const Color(0xFFF59E0B).withAlpha(50),
                   Colors.transparent,
                 ],
               ),
@@ -89,32 +96,51 @@ class _MainNavigationState extends State<MainNavigation> {
             height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFF1a1a4a), // Match navbar background
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF241D66), Color(0xFF141040)],
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF6B9D).withValues(alpha: 0.35),
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                ),
-                BoxShadow(
-                  color: const Color(0xFF9B51E0).withValues(alpha: 0.35),
+                  color: const Color(0xFFF59E0B).withAlpha(80),
                   blurRadius: 15,
                   spreadRadius: 2,
                 ),
               ],
+              border: Border.all(
+                color: _bottomNavIndex == 4
+                    ? const Color(0xFFF59E0B)
+                    : const Color(0xFFF59E0B).withAlpha(100),
+                width: 2,
+              ),
             ),
             child: ClipOval(
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
+                  onHighlightChanged: (val) {
+                    setState(() {
+                      _isFabPressed = val;
+                    });
+                  },
                   onTap: () {
-                    // Action for center button
+                    setState(() {
+                      _bottomNavIndex = 4;
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: SvgPicture.asset(
-                      'assets/icon/gamemode.svg',
-                      color: Colors.white,
+                    child: AnimatedScale(
+                      scale: _isFabPressed ? 0.85 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.easeOut,
+                      child: Image.asset(
+                        'assets/image/icon_footer3.png',
+                        color: _bottomNavIndex == 4
+                            ? const Color(0xFFF59E0B)
+                            : Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -124,36 +150,54 @@ class _MainNavigationState extends State<MainNavigation> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-        itemCount: svgIcons.length,
+        itemCount: footerIcons.length,
         tabBuilder: (int index, bool isActive) {
           final color = isActive ? const Color(0xFFF59E0B) : Colors.white;
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                svgIcons[index],
-                color: color,
-                width: 24,
-                height: 24,
+          return Listener(
+            onPointerDown: (_) => setState(() => _pressedIndex = index),
+            onPointerUp: (_) => setState(() => _pressedIndex = null),
+            onPointerCancel: (_) => setState(() => _pressedIndex = null),
+            child: AnimatedScale(
+              scale: _pressedIndex == index ? 0.85 : 1.0,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.easeOut,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    footerIcons[index],
+                    color: color,
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    navLabels[index],
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 10,
+                      fontWeight: isActive
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                navLabels[index],
-                style: TextStyle(color: color, fontSize: 10),
-              ),
-            ],
+            ),
           );
         },
-        activeIndex: _bottomNavIndex,
+        activeIndex: _bottomNavIndex >= 4 ? -1 : _bottomNavIndex,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 15,
-        rightCornerRadius: 15,
-        backgroundColor: const Color(0xFF1a1a4a), // Deep dark navy
+        leftCornerRadius: 20,
+        rightCornerRadius: 20,
+        backgroundColor: const Color(0xff0d0a27),
+        splashColor: Colors.transparent, // Disable splash bubble
+        splashRadius: 0,
+        splashSpeedInMilliseconds: 0,
         onTap: (index) {
           setState(() {
             _bottomNavIndex = index;

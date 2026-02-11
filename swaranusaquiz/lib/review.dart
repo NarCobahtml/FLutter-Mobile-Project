@@ -247,7 +247,7 @@ class ReviewAnswersScreen extends StatelessWidget {
                               width: 150,
                               height: 125,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF1a1a2e),
+                                color: const Color(0xFF110E33),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Icon(
@@ -261,7 +261,7 @@ class ReviewAnswersScreen extends StatelessWidget {
                           width: 130,
                           height: 90,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1a1a2e),
+                            color: const Color(0xFF110E33),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(

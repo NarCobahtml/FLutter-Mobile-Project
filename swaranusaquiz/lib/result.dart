@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'review.dart';
 
 class QuizResultScreen extends StatelessWidget {
   final int correctAnswers;
@@ -86,7 +87,14 @@ class QuizResultScreen extends StatelessWidget {
                         context,
                         label: 'Tinjau Jawaban',
                         onPressed: () {
-                          // Handle review answers
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReviewAnswersScreen(
+                                answers: ReviewAnswersData.getSampleData(),
+                              ),
+                            ),
+                          );
                         },
                       ),
                       const SizedBox(height: 12),
@@ -162,7 +170,7 @@ class QuizResultScreen extends StatelessWidget {
       height: 180,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: const Color(0xff3f2b2b),
+        color: const Color(0xFF110E33),
         boxShadow: [
           BoxShadow(
             color: Colors.black,
@@ -186,7 +194,7 @@ class QuizResultScreen extends StatelessWidget {
               return Text(
                 '$pct%',
                 style: const TextStyle(
-                  color: Color(0xFF1A1A3E),
+                  color: const Color(0xFF110E33),
                   fontSize: 56,
                   fontWeight: FontWeight.w900,
                   height: 1,
