@@ -1,182 +1,188 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<title>Interactive Gamelan Play Mode</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "bg-deep": "#110E33",
-                        "brand-orange": "#FA8112",
-                        "brand-orange-light": "#FFB366",
-                        "brand-orange-dark": "#B35B00",
-                        "indigo-card": "#1A1647",
+                        "primary": "#f77c18",
+                        "secondary-glow": "#FA8112",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#110E33",
                     },
                     fontFamily: {
-                        serif: ["Cinzel", "serif"],
-                        sans: ["Plus Jakarta Sans", "sans-serif"],
+                        "display": ["Plus Jakarta Sans"]
                     },
-                    boxShadow: {
-                        'orange-glow': '0 0 25px rgba(250, 129, 18, 0.4)',
-                        'card-depth': '0 10px 25px -5px rgba(0, 0, 0, 0.5)',
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'control-gradient': 'linear-gradient(180deg, rgba(56, 189, 248, 0.1) 0%, rgba(56, 189, 248, 0.05) 100%)',
                     }
                 },
             },
-        };
+        }
     </script>
-<style type="text/tailwindcss">
-        @layer utilities {
-            .bg-radial-depth {
-                background: radial-gradient(circle at top, #1E1A55 0%, #110E33 100%);
-            }
-            .glass-overlay {
-                background: rgba(255, 255, 255, 0.03);
-                backdrop-filter: blur(4px);
-                -webkit-backdrop-filter: blur(4px);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
-            .active-card-gradient {
-                background: linear-gradient(135deg, #FA8112 0%, #E67610 50%, #B35B00 100%);
-            }
-            .no-scrollbar::-webkit-scrollbar {
-                display: none;
-            }
-            .no-scrollbar {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gamelan-pot {
+            position: relative;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #cd853f, #8b4513 60%, #3e1f0a);
+            box-shadow: 
+                0 10px 15px -3px rgba(0, 0, 0, 0.5),
+                inset 0 2px 4px rgba(255,255,255,0.3);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .gamelan-pot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle at 30% 30%, #e6aa6b, #8b4513);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+        }
+        .gamelan-pot:active, .gamelan-pot.active {
+            transform: scale(0.95);
+            box-shadow: 0 0 25px var(--secondary-glow), inset 0 0 10px var(--secondary-glow);
+        }
+        .gamelan-pot:active::after {
+             background: radial-gradient(circle at 30% 30%, #fff, #FA8112);
+        }
+        .wood-frame {
+            background: linear-gradient(90deg, #3E2723 0%, #5D4037 50%, #3E2723 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .control-btn-gradient {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.6) 0%, rgba(17, 24, 39, 0.8) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .recording-dot {
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
-<title>Modern Grid Level Selection - Orange Palette</title>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
   </head>
-<body class="bg-bg-deep font-sans text-white/90 antialiased overflow-hidden">
-<div class="flex h-screen flex-col bg-radial-depth relative">
-<header class="flex items-center justify-between px-6 pt-14 pb-6 z-50">
-<button class="w-10 h-10 flex items-center justify-center rounded-xl glass-overlay text-white/70 active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-2xl">chevron_left</span>
+<body class="bg-background-dark text-slate-100 min-h-screen flex flex-col overflow-hidden select-none">
+<header class="fixed top-0 left-0 right-0 z-50 px-6 pt-12 pb-4 bg-gradient-to-b from-background-dark to-transparent">
+<div class="flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-sm">
+<span class="material-icons">chevron_left</span>
 </button>
-<div class="text-center">
-<h1 class="font-serif text-lg tracking-[0.2em] text-brand-orange-light uppercase">Nusantara</h1>
-<p class="text-[10px] tracking-[0.3em] text-white/40 font-light uppercase">Musical Journey</p>
-</div>
-<div class="w-10 h-10 flex items-center justify-center rounded-xl glass-overlay">
-<span class="material-symbols-outlined text-brand-orange text-xl">payments</span>
+<h1 class="text-xl font-bold tracking-wide text-white drop-shadow-md">Gamelan</h1>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors backdrop-blur-sm">
+<span class="material-icons text-lg">settings</span>
+</button>
 </div>
 </header>
-<main class="flex-1 overflow-y-auto no-scrollbar px-6 py-4">
-<div class="grid grid-cols-2 gap-4 pb-12">
-<div class="relative group cursor-pointer active:scale-[0.98] transition-all duration-200">
-<div class="active-card-gradient aspect-square rounded-[2rem] p-0.5 shadow-orange-glow flex items-center justify-center overflow-hidden">
-<div class="flex flex-col items-center justify-center space-y-2">
-<span class="material-symbols-outlined text-5xl text-brand-orange-dark/30 absolute -right-2 -bottom-2 rotate-12">music_note</span>
-<div class="w-16 h-16 rounded-full border-4 border-white/20 flex items-center justify-center bg-white/10">
-<span class="material-symbols-outlined text-4xl text-white font-light">graphic_eq</span>
+<main class="flex-grow flex items-center justify-center relative w-full h-full p-4 mt-16 mb-24">
+<div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+<div class="absolute top-1/4 -left-10 w-64 h-64 bg-primary/30 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-1/4 -right-10 w-64 h-64 bg-indigo-500/30 rounded-full blur-[100px]"></div>
 </div>
+<div class="relative z-10 w-full max-w-md aspect-[3/4] flex flex-col justify-center">
+<div class="wood-frame rounded-2xl p-6 relative shadow-2xl transform rotate-0">
+<div class="absolute -top-2 left-10 right-10 h-4 bg-[#2D1B15] rounded-t-lg opacity-80"></div>
+<div class="absolute -bottom-2 left-10 right-10 h-4 bg-[#2D1B15] rounded-b-lg opacity-80"></div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-12 place-items-center py-4">
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/5 rounded-full blur-xl opacity-0 group-active:opacity-100 transition-opacity"></div>
+<div aria-label="Note 1" class="gamelan-pot w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+<span class="text-white/20 font-bold text-xs pointer-events-none">1</span>
 </div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-1 h-8 bg-black/30"></div> 
 </div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-brand-orange-light/80 font-bold uppercase mb-1">Level 01</span>
-<div class="flex justify-center gap-1 mt-1">
-<span class="material-symbols-outlined text-[12px] text-brand-orange" style="font-variation-settings: 'FILL' 1">star</span>
-<span class="material-symbols-outlined text-[12px] text-brand-orange" style="font-variation-settings: 'FILL' 1">star</span>
-<span class="material-symbols-outlined text-[12px] text-brand-orange/30">star</span>
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/5 rounded-full blur-xl opacity-0 group-active:opacity-100 transition-opacity"></div>
+<div aria-label="Note 2" class="gamelan-pot w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+<span class="text-white/20 font-bold text-xs pointer-events-none">2</span>
 </div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-1 h-8 bg-black/30"></div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/5 rounded-full blur-xl opacity-0 group-active:opacity-100 transition-opacity"></div>
+<div aria-label="Note 3" class="gamelan-pot w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+<span class="text-white/20 font-bold text-xs pointer-events-none">3</span>
+</div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-1 h-8 bg-black/30"></div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/5 rounded-full blur-xl opacity-0 group-active:opacity-100 transition-opacity"></div>
+<div aria-label="Note 4" class="gamelan-pot w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+<span class="text-white/20 font-bold text-xs pointer-events-none">4</span>
+</div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 w-1 h-8 bg-black/30"></div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/5 rounded-full blur-xl opacity-0 group-active:opacity-100 transition-opacity"></div>
+<div aria-label="Note 5" class="gamelan-pot w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+<span class="text-white/20 font-bold text-xs pointer-events-none">5</span>
 </div>
 </div>
 <div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
+<div class="absolute -inset-4 bg-primary/5 rounded-full blur-xl opacity-0 group-active:opacity-100 transition-opacity"></div>
+<div aria-label="Note 6" class="gamelan-pot w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
+<span class="text-white/20 font-bold text-xs pointer-events-none">6</span>
 </div>
 </div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 02</span>
 </div>
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 pointer-events-none rounded-2xl"></div>
 </div>
-<div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
-</div>
-</div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 03</span>
-</div>
-</div>
-<div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
-</div>
-</div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 04</span>
-</div>
-</div>
-<div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
-</div>
-</div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 05</span>
-</div>
-</div>
-<div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
-</div>
-</div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 06</span>
-</div>
-</div>
-<div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
-</div>
-</div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 07</span>
-</div>
-</div>
-<div class="relative group">
-<div class="bg-indigo-card aspect-square rounded-[2rem] shadow-card-depth flex items-center justify-center relative overflow-hidden">
-<div class="glass-overlay absolute inset-0 z-10"></div>
-<div class="z-20 flex flex-col items-center justify-center">
-<span class="material-symbols-outlined text-white/10 text-3xl font-light">lock</span>
-</div>
-</div>
-<div class="mt-3 text-center">
-<span class="block text-sm tracking-[0.2em] text-white/30 font-bold uppercase mb-1">Level 08</span>
-</div>
-</div>
+<p class="text-center text-slate-400 text-sm mt-6 animate-pulse">Tap the pots to play</p>
 </div>
 </main>
+<div class="fixed bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent z-40">
+<div class="flex justify-center mb-4">
+<div class="px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-full flex items-center gap-2 hidden">
+<div class="w-2 h-2 rounded-full bg-red-500 recording-dot"></div>
+<span class="text-red-200 text-xs font-semibold tracking-wider">00:04</span>
 </div>
+</div>
+<div class="flex items-center justify-center gap-4 max-w-md mx-auto">
+<button class="control-btn-gradient w-14 h-14 rounded-full flex items-center justify-center group active:scale-95 transition-transform">
+<div class="w-4 h-4 rounded-full bg-red-500 group-hover:bg-red-400 shadow-[0_0_10px_rgba(239,68,68,0.5)] transition-colors"></div>
+</button>
+<button class="control-btn-gradient w-14 h-14 rounded-full flex items-center justify-center group active:scale-95 transition-transform">
+<div class="w-4 h-4 rounded-sm bg-slate-200 group-hover:bg-white shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-colors"></div>
+</button>
+<button class="control-btn-gradient w-20 h-20 rounded-full flex items-center justify-center group active:scale-95 transition-transform relative">
+<div class="absolute inset-0 rounded-full border border-primary/20 animate-ping opacity-20"></div>
+<span class="material-icons text-3xl text-primary drop-shadow-[0_0_8px_rgba(247,124,24,0.6)] group-hover:text-orange-300 transition-colors">play_arrow</span>
+</button>
+<button class="control-btn-gradient w-14 h-14 rounded-full flex items-center justify-center group active:scale-95 transition-transform">
+<span class="material-icons text-slate-400 group-hover:text-slate-200 text-xl">loop</span>
+</button>
+<button class="control-btn-gradient w-14 h-14 rounded-full flex items-center justify-center group active:scale-95 transition-transform">
+<span class="material-icons text-slate-400 group-hover:text-slate-200 text-xl">save_alt</span>
+</button>
+</div>
+<div class="w-24 h-1 bg-white/10 mx-auto rounded-full mt-6"></div>
+</div>
+
 </body></html>

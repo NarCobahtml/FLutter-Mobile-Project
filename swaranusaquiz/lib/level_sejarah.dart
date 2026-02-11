@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// TODO: Import kuis sejarah when available
+import 'sejarah/sejarah_pertanyaan/sejarah_pertanyaan1.dart';
 
 class _Colors {
   static const bgDeep = Color(0xFF110E33);
@@ -178,10 +178,18 @@ class _LevelCardState extends State<_LevelCard>
   void _onTapUp(TapUpDetails details) {
     if (!widget.level.isLocked) {
       _controller.reverse();
-      if (widget.level.number == 1) {
-        // TODO: Navigate to Sejarah quiz
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Kuis Sejarah segera hadir!')),
+      if (widget.level.number == 1 || widget.level.number == 2) {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const SejarahPertanyaan1(),
+            transitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+          ),
         );
       }
     }

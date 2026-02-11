@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// TODO: Import kuis tebak suara when available
+import 'tebak/tebak_pertanyaan/tebak_pertanyaan1.dart';
 
 class _Colors {
   static const bgDeep = Color(0xFF110E33);
@@ -178,10 +178,18 @@ class _LevelCardState extends State<_LevelCard>
   void _onTapUp(TapUpDetails details) {
     if (!widget.level.isLocked) {
       _controller.reverse();
-      if (widget.level.number == 1) {
-        // TODO: Navigate to Tebak Suara quiz
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Kuis Tebak Suara segera hadir!')),
+      if (widget.level.number == 1 || widget.level.number == 2) {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const TebakPertanyaan1(),
+            transitionDuration: const Duration(milliseconds: 300),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+          ),
         );
       }
     }

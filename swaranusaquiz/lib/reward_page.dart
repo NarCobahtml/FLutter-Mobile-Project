@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'gamelan_minigame.dart';
 
 class RewardPage extends StatelessWidget {
   const RewardPage({super.key});
@@ -78,10 +79,20 @@ class RewardPage extends StatelessWidget {
                         region: 'Jawa Barat',
                       ),
                       const SizedBox(width: 12),
-                      _InstrumentCard(
-                        imagePath: 'assets/image/gambar_gamelan.png',
-                        name: 'Gamelan',
-                        region: 'Jawa Tengah',
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GamelanMinigamePage(),
+                            ),
+                          );
+                        },
+                        child: _InstrumentCard(
+                          imagePath: 'assets/image/gambar_gamelan.png',
+                          name: 'Gamelan',
+                          region: 'Jawa Tengah',
+                        ),
                       ),
                       const SizedBox(width: 12),
                       _InstrumentCard(
